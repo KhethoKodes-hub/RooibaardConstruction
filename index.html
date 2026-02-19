@@ -2,135 +2,1221 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Rooibaard Construction | Civil Engineering & Mining Services</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="icon" href="assets/rooibaardlogo.png" type="image/png">
+
+    <style>
+        :root {
+            --red: #c0392b;
+            --red-bright: #e74c3c;
+            --red-dark: #922b21;
+            --black: #0a0a0a;
+            --dark: #111111;
+            --dark2: #1a1a1a;
+            --white: #ffffff;
+            --offwhite: #f5f0f0;
+            --glass-bg: rgba(255,255,255,0.08);
+            --glass-border: rgba(255,255,255,0.15);
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        h1, h2, h3, h4, .display-font {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        /* ============ NAVBAR ============ */
+        .navbar-custom {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 8px 0;
+            background: rgba(10,10,10,0.55);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(192,57,43,0.25);
+            transition: all 0.4s ease;
+        }
+
+        .navbar-custom.scrolled {
+            background: rgba(10,10,10,0.95);
+            border-bottom: 1px solid var(--red-dark);
+            padding: 4px 0;
+        }
+
+        .navbar-custom .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            position: relative;
+        }
+
+        .navbar-brand {
+            padding: 0;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .navbar-brand img {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 0 8px rgba(192,57,43,0.6));
+            transition: transform 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .navbar-brand img {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: none;
+            align-items: center;
+            gap: 5px;
+        }
+
+        @media (min-width: 992px) {
+            .desktop-nav {
+                display: flex !important;
+            }
+            
+            .mobile-menu-btn {
+                display: none !important;
+            }
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: rgba(192,57,43,0.15);
+            border: 1px solid var(--red);
+            border-radius: 4px;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1002;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--red);
+        }
+
+        .mobile-menu-btn.active {
+            background: var(--red);
+            border-color: var(--red-bright);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 400px;
+            height: 100vh;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-left: 2px solid var(--red);
+            padding: 100px 30px 40px;
+            transition: right 0.4s ease;
+            z-index: 1001;
+            overflow-y: auto;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu .nav-link-custom {
+            display: block;
+            padding: 18px 20px !important;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: left;
+        }
+
+        .mobile-menu .nav-link-custom::after {
+            display: none;
+        }
+
+        .mobile-menu .nav-cta {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 18px !important;
+        }
+
+        /* Common Nav Link Styles */
+        .nav-link-custom {
+            color: rgba(255,255,255,0.9) !important;
+            font-family: 'Barlow', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 8px 16px !important;
+            position: relative;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .desktop-nav .nav-link-custom {
+            font-size: 0.9rem;
+            padding: 8px 16px !important;
+        }
+
+        .nav-link-custom:hover {
+            color: var(--white) !important;
+            background: rgba(192,57,43,0.15);
+        }
+
+        .desktop-nav .nav-link-custom::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 16px; right: 16px;
+            height: 2px;
+            background: var(--red-bright);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .desktop-nav .nav-link-custom:hover::after { 
+            transform: scaleX(1); 
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: white !important;
+            border-radius: 4px;
+            padding: 8px 20px !important;
+            border: 1px solid var(--red-bright);
+            box-shadow: 0 4px 15px rgba(192,57,43,0.3);
+        }
+
+        .nav-cta:hover {
+            background: linear-gradient(135deg, var(--red-bright), var(--red));
+            box-shadow: 0 6px 25px rgba(231,76,60,0.5);
+            transform: translateY(-2px);
+        }
+
+        .desktop-nav .nav-cta::after { 
+            display: none; 
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: 100vh;
+            height: auto;
+            background:
+                linear-gradient(135deg,
+                    rgba(10,10,10,0.95) 0%,
+                    rgba(120,20,10,0.8) 50%,
+                    rgba(10,10,10,0.95) 100%),
+                url('assets/hero-bg.jpg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 100px 0 60px;
+            margin-top: 0;
+        }
+
+        .hero-content { 
+            position: relative; 
+            z-index: 2;
+            width: 100%;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            background: rgba(192,57,43,0.2);
+            border: 1px solid rgba(192,57,43,0.5);
+            color: var(--red-bright);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 2px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 12vw, 8rem);
+            line-height: 0.9;
+            letter-spacing: 2px;
+            word-break: break-word;
+        }
+
+        .hero-title .line-red { color: var(--red-bright); }
+
+        .hero-sub {
+            font-size: 1rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 1px;
+            margin-top: 15px;
+            max-width: 100%;
+        }
+
+        .hero-divider {
+            width: 60px; height: 3px;
+            background: linear-gradient(90deg, var(--red), transparent);
+            margin: 20px 0;
+        }
+
+        .btn-hero-primary, .btn-hero-secondary {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 12px;
+            padding: 12px 20px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            border-radius: 3px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 576px) {
+            .btn-hero-primary, .btn-hero-secondary {
+                display: inline-block;
+                width: auto;
+                margin-bottom: 0;
+            }
+            
+            .btn-hero-primary {
+                padding: 14px 36px;
+            }
+            
+            .btn-hero-secondary {
+                padding: 13px 36px;
+            }
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: white;
+            border: none;
+            box-shadow: 0 8px 30px rgba(192,57,43,0.4);
+        }
+
+        .btn-hero-secondary {
+            background: var(--glass-bg);
+            color: white;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-hero-primary:hover, .btn-hero-secondary:hover {
+            transform: translateY(-3px);
+            color: white;
+        }
+
+        /* Hero Stats */
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1px;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .stat-box {
+            flex: 1 1 calc(50% - 1px);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            padding: 12px 8px;
+            text-align: center;
+        }
+
+        @media (min-width: 576px) {
+            .stat-box {
+                padding: 15px 12px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .hero-stats {
+                position: absolute;
+                bottom: 60px; right: 0;
+                width: auto;
+                margin-top: 0;
+            }
+            
+            .stat-box {
+                flex: 1;
+                padding: 20px 28px;
+            }
+        }
+
+        .stat-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
+            color: var(--red-bright);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+        }
+
+        @media (min-width: 576px) {
+            .stat-label {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 15px; left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-indicator {
+                display: none;
+            }
+        }
+
+        /* ============ VALUE PROPS ============ */
+        .value-props {
+            background: linear-gradient(135deg, var(--dark2) 0%, #1f0a08 50%, var(--dark2) 100%);
+            padding: 30px 0;
+        }
+
+        .value-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-top: 3px solid transparent;
+            padding: 20px 10px;
+            text-align: center;
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+
+        .value-icon {
+            width: 45px; height: 45px;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 1.1rem;
+        }
+
+        .value-card h3 {
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .value-card p { 
+            color: rgba(255,255,255,0.6); 
+            font-size: 0.75rem; 
+            margin-bottom: 0;
+        }
+
+        @media (min-width: 768px) {
+            .value-card {
+                padding: 30px 15px;
+            }
+            
+            .value-icon {
+                width: 50px; height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .value-card h3 {
+                font-size: 1.1rem;
+            }
+            
+            .value-card p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ============ SECTION STYLING ============ */
+        section {
+            padding: 50px 0;
+            overflow-x: hidden;
+        }
+
+        @media (min-width: 768px) {
+            section {
+                padding: 80px 0;
+            }
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+        }
+
+        .section-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--red-bright);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 7vw, 4.5rem);
+            letter-spacing: 2px;
+            line-height: 1;
+            word-break: break-word;
+        }
+
+        .section-line {
+            width: 50px; height: 3px;
+            background: linear-gradient(90deg, var(--red), var(--red-dark));
+            margin-top: 15px;
+        }
+
+        /* ============ SERVICES ============ */
+        .service-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 4px;
+            padding: 30px 20px;
+            height: 100%;
+            margin-bottom: 15px;
+        }
+
+        .service-icon-wrap {
+            width: 50px; height: 50px;
+            border: 1px solid rgba(192,57,43,0.3);
+            border-radius: 4px;
+            font-size: 1.5rem;
+            color: var(--red-bright);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .service-card h3 {
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .service-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-list li {
+            padding: 6px 0;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-list li::before {
+            content: '';
+            width: 5px; height: 5px;
+            background: var(--red);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .btn-service {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            color: var(--red-bright);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ============ ABOUT ============ */
+        .about-section {
+            background: linear-gradient(135deg, var(--offwhite) 0%, #ffffff 50%, #fdf0ef 100%);
+            padding: 50px 0;
+        }
+
+        .about-section p { 
+            color: #333; 
+            font-size: 0.95rem; 
+            line-height: 1.6; 
+        }
+
+        .vm-box {
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(192,57,43,0.15);
+            border-left: 4px solid var(--red);
+            padding: 18px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .vm-box h4 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            color: var(--red);
+        }
+
+        .vm-box p { 
+            font-size: 0.85rem; 
+            margin-bottom: 0;
+        }
+
+        /* Director Card */
+        .director-card {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            max-width: 350px;
+            margin: 20px auto 0;
+        }
+
+        .director-card img {
+            width: 100%;
+            border-radius: 4px;
+            filter: grayscale(20%);
+        }
+
+        .director-badge {
+            position: absolute;
+            bottom: 15px; left: 0px;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: white;
+            padding: 12px 18px;
+            border-radius: 4px;
+            box-shadow: 0 15px 40px rgba(192,57,43,0.5);
+            width: calc(100% - 15px);
+        }
+
+        @media (min-width: 576px) {
+            .director-badge {
+                left: -10px;
+                width: auto;
+                padding: 15px 25px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .director-badge {
+                left: -20px;
+                padding: 20px 28px;
+            }
+        }
+
+        .director-badge h4 {
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .director-badge p { 
+            font-size: 0.75rem; 
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        @media (min-width: 576px) {
+            .director-badge h4 {
+                font-size: 1.1rem;
+            }
+            
+            .director-badge p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ============ CERTIFICATIONS ============ */
+        .cert-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 4px;
+            padding: 25px 12px;
+            text-align: center;
+            height: 100%;
+            margin-bottom: 15px;
+        }
+
+        .cert-card img {
+            max-height: 60px;
+            max-width: 100px;
+            object-fit: contain;
+            margin-bottom: 12px;
+        }
+
+        .cert-card p {
+            font-size: 0.75rem;
+            margin-bottom: 0;
+            color: rgba(255,255,255,0.7);
+        }
+
+        @media (min-width: 768px) {
+            .cert-card img {
+                max-height: 70px;
+                max-width: 120px;
+            }
+            
+            .cert-card p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ============ CLIENTS ============ */
+        .client-logo-wrap {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .client-logo-wrap img {
+            max-height: 40px;
+            max-width: 120px;
+            object-fit: contain;
+            filter: grayscale(100%);
+            opacity: 0.6;
+        }
+
+        @media (min-width: 768px) {
+            .client-logo-wrap img {
+                max-height: 50px;
+                max-width: 150px;
+            }
+        }
+
+        /* ============ CTA BAND ============ */
+        .cta-band {
+            background: linear-gradient(135deg, var(--red-dark) 0%, var(--red) 50%, var(--red-dark) 100%);
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .cta-band h2 {
+            font-size: clamp(1.6rem, 5vw, 3.5rem);
+            margin-bottom: 12px;
+        }
+
+        .cta-band p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .btn-cta-white, .btn-cta-outline {
+            display: block;
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 3px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 576px) {
+            .btn-cta-white, .btn-cta-outline {
+                display: inline-block;
+                width: auto;
+                margin-bottom: 0;
+            }
+            
+            .btn-cta-white {
+                padding: 14px 38px;
+            }
+            
+            .btn-cta-outline {
+                padding: 12px 38px;
+            }
+        }
+
+        .btn-cta-white {
+            background: white;
+            color: var(--red-dark);
+            border: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-cta-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.6);
+        }
+
+        .btn-cta-white:hover {
+            background: var(--black);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .btn-cta-outline:hover {
+            background: white;
+            color: var(--red-dark);
+            border-color: white;
+            transform: translateY(-3px);
+        }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            background: #050505;
+            border-top: 1px solid rgba(192,57,43,0.2);
+            padding: 50px 0 20px;
+        }
+
+        .footer h4 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: white;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--red);
+            display: inline-block;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            word-break: break-word;
+        }
+
+        .footer-contact-item i {
+            color: var(--red-bright);
+            width: 16px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .social-btn {
+            width: 35px; height: 35px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: var(--red);
+            border-color: var(--red);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.07);
+            margin-top: 40px;
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.75rem;
+            margin-bottom: 0;
+        }
+
+        .footer-bottom span {
+            color: var(--red-bright);
+        }
+
+        @media (min-width: 768px) {
+            .footer-bottom p {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* ============ UTILITY CLASSES ============ */
+        .container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1320px;
+            }
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        .reveal, .reveal-left, .reveal-right {
+            opacity: 1;
+            transform: none;
+        }
+        
+        @media (min-width: 768px) {
+            .reveal { 
+                opacity: 0; 
+                transform: translateY(40px); 
+                transition: all 0.7s ease; 
+            }
+            .reveal-left { 
+                opacity: 0; 
+                transform: translateX(-40px); 
+                transition: all 0.7s ease; 
+            }
+            .reveal-right { 
+                opacity: 0; 
+                transform: translateX(40px); 
+                transition: all 0.7s ease; 
+            }
+            .reveal.visible, .reveal-left.visible, .reveal-right.visible { 
+                opacity: 1; 
+                transform: translate(0); 
+            }
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                 <img src="assets/rooibaardlogo.png" alt="Logo" width="90" height="90" class="d-inline-block align-text-top">
 
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar-custom" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="assets/rooibaardlogo.png" alt="Rooibaard Logo">
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <div class="desktop-nav">
+                <a href="#home" class="nav-link-custom">Home</a>
+                <a href="about.html" class="nav-link-custom">About</a>
+                <a href="services.html" class="nav-link-custom">Services</a>
+                                <a href="clients.html" class="nav-link-custom">Clients</a>
+
+                <a href="contact.html" class="nav-link-custom nav-cta">Contact Us</a>
             </div>
-            <nav class="navbar">
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="services.html">Services</a></li>
-                    <!--<li><a href="certifications.html">Certifications</a></li>-->
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="mobile-menu-btn">
+
+            <!-- Mobile Menu Button -->
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
                 <i class="fas fa-bars"></i>
             </div>
         </div>
-    </header>
+    </nav>
 
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#home" class="nav-link-custom">Home</a>
+        <a href="about.html" class="nav-link-custom">About</a>
+        <a href="services.html" class="nav-link-custom">Services</a>
+                                        <a href="clients.html" class="nav-link-custom">Clients</a>
+
+        <a href="contact.html" class="nav-link-custom nav-cta">Contact Us</a>
+    </div>
+
+    <!-- ========== HERO ========== -->
     <section id="home" class="hero">
-        <div class="hero-overlay">
-            <div class="container">
-                <h2>Building Northern Cape's Future</h2>
-                <p>Civil Engineering & Mining Services with Excellence</p>
-                <div class="hero-buttons">
-                    <a href="#services" class="btn-primary">Our Services</a>
-                    <a href="#contact" class="btn-secondary">Contact Us</a>
+        <div class="container hero-content">
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <div class="hero-eyebrow">Postmasburg, Northern Cape</div>
+                    <h1 class="hero-title">
+                        Building<br>
+                        <span class="line-red">Northern</span><br>
+                        Cape's Future
+                    </h1>
+                    <div class="hero-divider"></div>
+                    <p class="hero-sub">Civil Engineering & Mining Services — Excellence Since 2015</p>
+                    <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-3 mt-4">
+                        <a href="#services" class="btn-hero-primary">
+                            <i class="fas fa-hard-hat me-2"></i> Our Services
+                        </a>
+                        <a href="contact.html" class="btn-hero-secondary">
+                            <i class="fas fa-phone me-2"></i> Get a Quote
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="hero-stats">
+                <div class="stat-box">
+                    <div class="stat-number">9+</div>
+                    <div class="stat-label">Years Active</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">L1</div>
+                    <div class="stat-label">BBBEE Rating</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Youth Owned</div>
                 </div>
             </div>
         </div>
+
+        <!-- Scroll indicator -->
+        <div class="scroll-indicator">
+            Scroll
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </section>
 
+    <!-- ========== VALUE PROPS ========== -->
     <section class="value-props">
         <div class="container">
-            <div class="value-prop">
-                <i class="fas fa-user-tie"></i>
-                <h3>100% Black Youth Owned</h3>
-                <p>BBBEE Level 1 Contributor</p>
-            </div>
-            <div class="value-prop">
-                <i class="fas fa-hard-hat"></i>
-                <h3>9+ Years Experience</h3>
-                <p>Industry expertise since 2015</p>
-            </div>
-            <div class="value-prop">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>Northern Cape Specialists</h3>
-                <p>Serving Postmasburg & beyond</p>
-            </div>
-            <div class="value-prop">
-                <i class="fas fa-medal"></i>
-                <h3>Fully Certified</h3>
-                <p>CIDB, NHBRC, COIDA registered</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="services" class="services">
-        <div class="container">
-            <h2 class="section-title">Our Services</h2>
-            <div class="services-grid">
-                <div class="service-card civil">
-                    <div class="service-icon">
-                        <i class="fas fa-road"></i>
+            <div class="row g-2 g-lg-3">
+                <div class="col-6 col-lg-3 reveal delay-1">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-user-tie"></i></div>
+                        <h3>100% Black Youth Owned</h3>
+                        <p>BBBEE Level 1</p>
                     </div>
-                    <h3>Civil Engineering</h3>
-                    <ul>
-                        <li>Road Construction & Marking</li>
-                        <li>Dam Building</li>
-                        <li>Infrastructure Work</li>
-                        <li>Trenching & Utility Installation</li>
-                    </ul>
-                    <a href="#" class="btn-service">View All Services</a>
                 </div>
-                <div class="service-card mining">
-                    <div class="service-icon">
-                        <i class="fas fa-mountain"></i>
+                <div class="col-6 col-lg-3 reveal delay-2">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-hard-hat"></i></div>
+                        <h3>9+ Years Experience</h3>
+                        <p>Since 2015</p>
                     </div>
-                    <h3>Mining Services</h3>
-                    <ul>
-                        <li>Plant Fabrication</li>
-                        <li>Pipeline Installation</li>
-                        <li>Technical Services</li>
-                        <li>Equipment Supply</li>
-                    </ul>
-                    <a href="#" class="btn-service">View All Services</a>
+                </div>
+                <div class="col-6 col-lg-3 reveal delay-3">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <h3>Northern Cape</h3>
+                        <p>Local Specialists</p>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3 reveal delay-4">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-medal"></i></div>
+                        <h3>Fully Certified</h3>
+                        <p>CIDB, NHBRC, COIDA</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="about" class="about">
+    <!-- ========== SERVICES ========== -->
+    <section id="services" class="services-section">
         <div class="container">
-            <div class="about-content">
-                <h2 class="section-title">About Us</h2>
-                <div class="about-grid">
-                    <div class="about-text">
-                        <p>Rooibaard Construction is a 100% black youth owned local Engineering & Mining services contractor operating in Postmasburg, Northern Cape. We provide complete engineering solutions for both private and public sectors.</p>
-                        
-                        <div class="vision-mission">
+            <div class="row mb-4">
+                <div class="col-lg-6 reveal">
+                    <div class="section-header">
+                        <span class="section-tag">What We Do</span>
+                        <h2 class="section-title">Our Core Services</h2>
+                        <div class="section-line"></div>
+                    </div>
+                </div>
+                <div class="col-lg-6 reveal delay-2 d-flex align-items-end">
+                    <p class="text-white-50 mb-0">
+                        Delivering world-class civil engineering and mining support services to the Northern Cape and beyond.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row g-3 g-lg-4">
+                <div class="col-lg-6 reveal-left">
+                    <div class="service-card">
+                        <div class="service-icon-wrap">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h3>Civil Engineering</h3>
+                        <ul class="service-list">
+                            <li>Road Construction & Marking</li>
+                            <li>Dam Building</li>
+                            <li>Infrastructure Work</li>
+                            <li>Trenching & Utility Installation</li>
+                        </ul>
+                        <a href="services.html" class="btn-service">
+                            View All Services <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 reveal-right">
+                    <div class="service-card">
+                        <div class="service-icon-wrap">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <h3>Mining Services</h3>
+                        <ul class="service-list">
+                            <li>Plant Fabrication</li>
+                            <li>Pipeline Installation</li>
+                            <li>Technical Services</li>
+                            <li>Equipment Supply</li>
+                        </ul>
+                        <a href="services.html" class="btn-service">
+                            View All Services <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ABOUT ========== -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="row align-items-center g-4 g-lg-5">
+                <div class="col-lg-6 reveal-left">
+                    <div class="section-header">
+                        <span class="section-tag">Who We Are</span>
+                        <h2 class="section-title text-dark">About Rooibaard</h2>
+                        <div class="section-line"></div>
+                    </div>
+                    <p class="mt-3">
+                        Rooibaard Construction is a 100% black youth owned local Engineering & Mining services contractor operating in Postmasburg, Northern Cape. We provide complete engineering solutions for both private and public sectors.
+                    </p>
+
+                    <div class="row g-2 mt-3">
+                        <div class="col-12">
                             <div class="vm-box">
                                 <h4>Our Vision</h4>
-                                <p>"To provide affordable and sustainable quality engineering & construction services, striving to be the most successful construction company in the region."</p>
+                                <p>"To provide affordable and sustainable quality engineering & construction services."</p>
                             </div>
+                        </div>
+                        <div class="col-12">
                             <div class="vm-box">
                                 <h4>Our Mission</h4>
-                                <p>"To operate a disciplined company in Civil Engineering & Mining services, leading the way to improvement for prompt and efficient services."</p>
+                                <p>"To operate a disciplined company leading the way to improvement for prompt and efficient services."</p>
                             </div>
                         </div>
                     </div>
-                   
+                </div>
 
-                   
-                    <div class="about-image">
-                        <img src="assets/mandilakherooiblaad.jpeg" alt="Mandilakhe Vincent Rooibaard">
-                        <div class="director-info">
+                <div class="col-lg-6 text-center reveal-right">
+                    <div class="director-card">
+                        <img src="assets/mandilakherooiblaad.jpeg" alt="Mandilakhe Vincent Rooibaard" class="img-fluid">
+                        <div class="director-badge">
                             <h4>Mandilakhe Vincent Rooibaard</h4>
-                            <p>Owner/Director</p>
+                            <p>Owner / Director</p>
                         </div>
                     </div>
                 </div>
@@ -138,127 +1224,271 @@
         </div>
     </section>
 
-    <section id="certifications" class="certifications">
+    <!-- ========== CERTIFICATIONS ========== -->
+    <section id="certifications" class="certs-section">
         <div class="container">
-            <h2 class="section-title">Our Certifications</h2>
-            <div class="certs-grid">
-                <div class="cert-item">
-                    <img src="assets/rooibaardbbbeelevel.png" alt="BBBEE Level 1">
-                    <p>BBBEE Level 1</p>
+            <div class="text-center mb-4 reveal">
+                <span class="section-tag">Compliance & Standards</span>
+                <h2 class="section-title">Our Certifications</h2>
+                <div class="section-line mx-auto"></div>
+            </div>
+
+            <div class="row g-3 justify-content-center">
+                <div class="col-6 col-md-3 reveal delay-1">
+                    <div class="cert-card">
+                        <img src="assets/rooibaardbbbeelevel.png" alt="BBBEE Level 1" class="img-fluid">
+                        <p>BBBEE Level 1</p>
+                    </div>
                 </div>
-                <div class="cert-item">
-                    <img src="assets/rooiblaadcidb.png" alt="CIDB Certified">
-                    <p>CIDB Registered</p>
+                <div class="col-6 col-md-3 reveal delay-2">
+                    <div class="cert-card">
+                        <img src="assets/rooiblaadcidb.png" alt="CIDB" class="img-fluid">
+                        <p>CIDB Registered</p>
+                    </div>
                 </div>
-                <div class="cert-item">
-                    <img src="assets/rooiblaadnhbrc.jpeg" alt="NHBRC">
-                    <p>NHBRC Registered</p>
+                <div class="col-6 col-md-3 reveal delay-3">
+                    <div class="cert-card">
+                        <img src="assets/rooiblaadnhbrc.jpeg" alt="NHBRC" class="img-fluid">
+                        <p>NHBRC Registered</p>
+                    </div>
                 </div>
-                <div class="cert-item">
-                    <img src="assets/Rooiblaadcoida.jpg" alt="COIDA">
-                    <p>COIDA Compliant</p>
+                <div class="col-6 col-md-3 reveal delay-4">
+                    <div class="cert-card">
+                        <img src="assets/Rooiblaadcoida.jpg" alt="COIDA" class="img-fluid">
+                        <p>COIDA Compliant</p>
+                    </div>
                 </div>
             </div>
-            <!--<a href="#" class="btn-primary">View All Certifications</a>-->
         </div>
     </section>
 
-    <section class="clients">
+    <!-- ========== CLIENTS ========== -->
+    <section class="clients-section">
         <div class="container">
-            <h2 class="section-title">Trusted By</h2>
-            <div class="clients-grid">
-                <img src="assets/rooiblaadanglo-american.jpg" alt="AngloAmerican">
-                <img src="assets/rooiblaadbidvest.webp" alt="Bidvest">
+            <div class="text-center mb-4 reveal">
+                <span class="section-tag">Our Partners</span>
+                <h2 class="section-title">Trusted By</h2>
+                <div class="section-line mx-auto"></div>
+            </div>
+
+            <div class="row g-3 justify-content-center reveal">
+                <div class="col-6 col-md-4">
+                    <div class="client-logo-wrap">
+                        <img src="assets/rooiblaadanglo-american.jpg" alt="AngloAmerican" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="client-logo-wrap">
+                        <img src="assets/rooiblaadbidvest.webp" alt="Bidvest" class="img-fluid">
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!--<section id="contact" class="contact">
+    <!-- ========== CTA BAND ========== -->
+    <section class="cta-band">
         <div class="container">
-            <h2 class="section-title">Contact Us</h2>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>Get in Touch</h3>
-                    <div class="info-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <p>7 Dalia Way, Postdene, Postmasburg, Northern Cape, 8420</p>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-phone"></i>
-                        <p>082 422 7601 / 068 717 6853</p>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-envelope"></i>
-                        <p>rooibaardconstruction@gmail.com<br>sales@rooibaardconstruction.com</p>
-                    </div>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://wa.me/27824227601" target="_blank"><i class="fab fa-whatsapp"></i></a>
-</a>
-  
-                    </div>
+            <div class="row align-items-center gy-4">
+                <div class="col-lg-8 reveal-left">
+                    <h2>Ready to Build Something Exceptional?</h2>
+                    <p>Contact our team for a professional consultation and tailored quote.</p>
                 </div>
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <input type="text" id="name" placeholder="Your Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" id="phone" placeholder="Your Phone">
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" placeholder="Your Message" required></textarea>
-                        </div>
-                        <button type="submit" class="btn-primary">Send Message</button>
-                    </form>
+                <div class="col-lg-4 reveal-right">
+                    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-lg-end">
+                        <a href="contact.html" class="btn-cta-white">Get a Quote</a>
+                        <a href="tel:0824227601" class="btn-cta-outline">
+                            <i class="fas fa-phone me-2"></i>082 422 7601
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>-->
+    </section>
 
+    <!-- ========== FOOTER ========== -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-about">
-                 <img src="assets/rooibaardlogo.png" alt="Logo" width="90" height="90" class="d-inline-block align-text-top">
-
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <div class="footer-logo mb-3">
+                        <img src="assets/rooibaardlogo.png" alt="Rooibaard Logo" width="70" height="70" class="img-fluid">
+                    </div>
+                    <p class="text-white-50 small">
+                        Rooibaard Construction (Pty) Ltd — Building Northern Cape's future with excellence and integrity.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://wa.me/27824227601" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
-                    <ul>
+                <div class="col-6 col-lg-2 footer-links">
+                    <h4>Navigation</h4>
+                    <ul class="list-unstyled">
                         <li><a href="#home">Home</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="services.html">Services</a></li>
-                        <!--<li><a href="certifications.html">Certifications</a></li>-->
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
-                <div class="footer-services">
-                    <h3>Our Services</h3>
-                    <ul>
+                <div class="col-6 col-lg-3 footer-links">
+                    <h4>Services</h4>
+                    <ul class="list-unstyled">
                         <li><a href="#">Civil Engineering</a></li>
                         <li><a href="#">Mining Services</a></li>
                         <li><a href="#">Road Construction</a></li>
                         <li><a href="#">Infrastructure Work</a></li>
                     </ul>
                 </div>
-                <div class="footer-contact">
-                    <h3>Contact Info</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> 7 Dalia Way, Postmasburg, Northern Cape, South Africa</p>
-                    <p><i class="fas fa-phone"></i> 082 422 7601/068 717 6853</p>
-                    <p><i class="fas fa-envelope"></i> sales@rooibaardconstruction.com</p>
+                <div class="col-lg-4">
+                    <h4>Contact Info</h4>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>7 Dalia Way, Postdene, Postmasburg, 8420</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>082 422 7601 / 068 717 6853</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>rooibaardconstruction@gmail.com</span>
+                    </div>
                 </div>
             </div>
+
             <div class="footer-bottom">
-                <p>&copy; 2023 Rooibaard Construction (Pty) Ltd. All Rights Reserved. | CK No: 2015/236912/07</p>
+                <p>&copy; 2023 <span>Rooibaard Construction (Pty) Ltd</span>. All Rights Reserved. | CK No: 2015/236912/07</p>
             </div>
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('mainNavbar');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('mobileMenuOverlay');
+            const body = document.body;
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                navbar.classList.toggle('scrolled', window.scrollY > 60);
+            });
+
+            // Mobile menu toggle
+            if (menuBtn && mobileMenu && overlay) {
+                menuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isActive = mobileMenu.classList.contains('active');
+                    
+                    if (!isActive) {
+                        // Open menu
+                        mobileMenu.classList.add('active');
+                        overlay.classList.add('active');
+                        menuBtn.classList.add('active');
+                        menuBtn.innerHTML = '<i class="fas fa-times"></i>';
+                        body.style.overflow = 'hidden';
+                    } else {
+                        // Close menu
+                        mobileMenu.classList.remove('active');
+                        overlay.classList.remove('active');
+                        menuBtn.classList.remove('active');
+                        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                        body.style.overflow = '';
+                    }
+                });
+
+                // Close menu when clicking overlay
+                overlay.addEventListener('click', function() {
+                    mobileMenu.classList.remove('active');
+                    overlay.classList.remove('active');
+                    menuBtn.classList.remove('active');
+                    menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    body.style.overflow = '';
+                });
+
+                // Close menu when clicking a link
+                const menuLinks = mobileMenu.querySelectorAll('.nav-link-custom');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.remove('active');
+                        overlay.classList.remove('active');
+                        menuBtn.classList.remove('active');
+                        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                        body.style.overflow = '';
+                    });
+                });
+            }
+
+            // Scroll reveal observer
+            const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+            
+            if (revealEls.length > 0) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px' });
+
+                revealEls.forEach(el => observer.observe(el));
+            }
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    
+                    if (targetId === '#') return;
+                    
+                    const target = document.querySelector(targetId);
+                    
+                    if (target) {
+                        e.preventDefault();
+                        
+                        // Close mobile menu if open
+                        if (mobileMenu && mobileMenu.classList.contains('active')) {
+                            mobileMenu.classList.remove('active');
+                            overlay.classList.remove('active');
+                            menuBtn.classList.remove('active');
+                            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                            body.style.overflow = '';
+                        }
+                        
+                        target.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }
+                });
+            });
+
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (window.innerWidth >= 992) {
+                        // Close mobile menu on desktop
+                        if (mobileMenu && mobileMenu.classList.contains('active')) {
+                            mobileMenu.classList.remove('active');
+                            overlay.classList.remove('active');
+                            menuBtn.classList.remove('active');
+                            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                            body.style.overflow = '';
+                        }
+                    }
+                }, 250);
+            });
+        });
+    </script>
 </body>
 </html>

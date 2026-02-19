@@ -2,654 +2,1541 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>About Us | Rooibaard Construction</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <link rel="icon" href="assets/rooibaardlogo.png" type="image/png">
+
     <style>
         :root {
-            --primary: #B71C1C;
-            --secondary: #333333;
-            --accent: #FFD700;
-            --white: #FFFFFF;
-            --light-gray: #F5F5F5;
-            --dark-gray: #222222;
+            --red: #c0392b;
+            --red-bright: #e74c3c;
+            --red-dark: #922b21;
+            --black: #0a0a0a;
+            --dark: #111111;
+            --dark2: #1a1a1a;
+            --white: #ffffff;
+            --offwhite: #f5f0f0;
+            --glass-bg: rgba(255,255,255,0.08);
+            --glass-border: rgba(255,255,255,0.15);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
         }
 
         body {
-            line-height: 1.6;
-            color: var(--secondary);
-            background-color: var(--white);
+            font-family: 'Barlow', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            width: 100%;
         }
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
+        h1, h2, h3, h4, h5 { 
+            font-family: 'Bebas Neue', sans-serif; 
+            letter-spacing: 2px; 
         }
 
-        section {
-            padding: 80px 0;
+        /* ============ NAVBAR ============ */
+        .navbar-custom {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 8px 0;
+            background: rgba(10,10,10,0.55);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(192,57,43,0.25);
+            transition: all 0.4s ease;
+        }
+
+        .navbar-custom.scrolled {
+            background: rgba(10,10,10,0.95);
+            border-bottom: 1px solid var(--red-dark);
+            padding: 4px 0;
+        }
+
+        .navbar-custom .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            position: relative;
+        }
+
+        .navbar-brand {
+            padding: 0;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .navbar-brand img {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 0 8px rgba(192,57,43,0.6));
+            transition: transform 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .navbar-brand img {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: none;
+            align-items: center;
+            gap: 5px;
+        }
+
+        @media (min-width: 992px) {
+            .desktop-nav {
+                display: flex !important;
+            }
+            
+            .mobile-menu-btn {
+                display: none !important;
+            }
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: rgba(192,57,43,0.15);
+            border: 1px solid var(--red);
+            border-radius: 4px;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1002;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--red);
+        }
+
+        .mobile-menu-btn.active {
+            background: var(--red);
+            border-color: var(--red-bright);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 400px;
+            height: 100vh;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-left: 2px solid var(--red);
+            padding: 100px 30px 40px;
+            transition: right 0.4s ease;
+            z-index: 1001;
+            overflow-y: auto;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu .nav-link-custom {
+            display: block;
+            padding: 18px 20px !important;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: left;
+        }
+
+        .mobile-menu .nav-link-custom::after {
+            display: none;
+        }
+
+        .mobile-menu .nav-cta {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 18px !important;
+        }
+
+        /* Common Nav Link Styles */
+        .nav-link-custom {
+            color: rgba(255,255,255,0.9) !important;
+            font-family: 'Barlow', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 8px 16px !important;
+            position: relative;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .desktop-nav .nav-link-custom {
+            font-size: 0.9rem;
+            padding: 8px 16px !important;
+        }
+
+        .nav-link-custom:hover {
+            color: var(--white) !important;
+            background: rgba(192,57,43,0.15);
+        }
+
+        .desktop-nav .nav-link-custom::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 16px; right: 16px;
+            height: 2px;
+            background: var(--red-bright);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .desktop-nav .nav-link-custom:hover::after,
+        .desktop-nav .nav-link-custom.active-link::after { 
+            transform: scaleX(1); 
+        }
+
+        .desktop-nav .nav-link-custom.active-link {
+            color: var(--white) !important;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: white !important;
+            border-radius: 4px;
+            padding: 8px 20px !important;
+            border: 1px solid var(--red-bright);
+            box-shadow: 0 4px 15px rgba(192,57,43,0.3);
+        }
+
+        .nav-cta:hover {
+            background: linear-gradient(135deg, var(--red-bright), var(--red));
+            box-shadow: 0 6px 25px rgba(231,76,60,0.5);
+            transform: translateY(-2px);
+        }
+
+        .desktop-nav .nav-cta::after { 
+            display: none; 
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-hero {
+            min-height: 420px;
+            background:
+                linear-gradient(135deg,
+                    rgba(10,10,10,0.88) 0%,
+                    rgba(100,15,8,0.72) 50%,
+                    rgba(10,10,10,0.95) 100%),
+                url('assets/rooibaardhat.png') center/cover no-repeat;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 70px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            top: -150px; right: -150px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(192,57,43,0.2) 0%, transparent 70%);
+            pointer-events: none;
+            animation: glow 5s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.12); }
+        }
+
+        .page-hero-content { 
+            position: relative; 
+            z-index: 2; 
+            width: 100%;
+        }
+
+        .page-eyebrow {
+            display: inline-block;
+            background: rgba(192,57,43,0.2);
+            border: 1px solid rgba(192,57,43,0.5);
+            color: var(--red-bright);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 2px;
+            margin-bottom: 16px;
+        }
+
+        .page-hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            letter-spacing: 3px;
+            line-height: 0.95;
+            margin-bottom: 15px;
+        }
+
+        .breadcrumb-custom {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-custom li a {
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        .breadcrumb-custom li a:hover { color: white; }
+        .breadcrumb-custom li.active { color: var(--red-bright); font-size: 0.8rem; }
+        .breadcrumb-custom li:not(:last-child)::after {
+            content: '/';
+            margin-left: 8px;
+            color: rgba(255,255,255,0.25);
+        }
+
+        /* Wave divider */
+        .wave-divider {
+            position: absolute;
+            bottom: -1px; left: 0; right: 0;
+            height: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .wave-divider {
+                height: 60px;
+            }
+        }
+
+        /* ===== SECTION HELPERS ===== */
+        .section-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--red-bright);
+            display: block;
+            margin-bottom: 8px;
         }
 
         .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-            font-size: 2.5rem;
-            color: var(--primary);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.8rem);
+            letter-spacing: 3px;
+            line-height: 1;
+            word-break: break-word;
+        }
+
+        .section-line {
+            width: 50px; height: 3px;
+            background: linear-gradient(90deg, var(--red), var(--red-dark));
+            margin-top: 15px;
+        }
+
+        /* ===== OUR STORY ===== */
+        .story-section {
+            background: linear-gradient(160deg, #0a0a0a 0%, #150505 40%, #0a0a0a 100%);
+            padding: 80px 0 60px;
             position: relative;
         }
 
-        .section-title::after {
-            content: '';
+        @media (min-width: 768px) {
+            .story-section {
+                padding: 110px 0 80px;
+            }
+        }
+
+        .story-text p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95rem;
+            line-height: 1.75;
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .story-text p {
+                font-size: 1.05rem;
+            }
+        }
+
+        .story-text p strong { color: var(--white); }
+
+        /* Director Card - Mobile Optimized */
+        .director-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 30px auto 0;
+        }
+
+        .director-wrap img {
+            width: 100%;
+            border-radius: 4px;
             display: block;
-            width: 80px;
-            height: 4px;
-            background-color: var(--accent);
-            margin: 15px auto;
+            filter: grayscale(15%);
+            transition: filter 0.4s ease;
         }
 
-        .btn-primary {
-            display: inline-block;
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 12px 30px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
+        .director-wrap:hover img { filter: grayscale(0%); }
+
+        .director-frame {
+            display: none;
         }
 
-        .btn-primary:hover {
-            background-color: #9C1A1A;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        @media (min-width: 768px) {
+            .director-frame {
+                display: block;
+                position: absolute;
+                top: -15px; right: -15px;
+                width: calc(100% - 0px);
+                height: calc(100% - 0px);
+                border: 2px solid rgba(192,57,43,0.35);
+                border-radius: 4px;
+                pointer-events: none;
+                transition: border-color 0.4s;
+            }
+            .director-wrap:hover .director-frame { border-color: rgba(192,57,43,0.7); }
         }
 
-        .header {
-            background-color: var(--white);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .header.scrolled {
-            background-color: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 15px;
-        }
-
-        .logo h1 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .logo h1 span {
-            color: var(--secondary);
-        }
-
-        .logo p {
-            color: var(--secondary);
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .navbar ul {
-            display: flex;
-            list-style: none;
-        }
-
-        .navbar ul li {
-            margin-left: 30px;
-        }
-
-        .navbar ul li a {
-            color: var(--secondary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
+        .director-badge {
             position: relative;
-        }
-
-        .navbar ul li a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary);
-            bottom: -5px;
+            bottom: 0;
             left: 0;
-            transition: width 0.3s ease;
-        }
-
-        .navbar ul li a:hover {
-            color: var(--primary);
-        }
-
-        .navbar ul li a:hover::after {
-            width: 100%;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--primary);
-        }
-
-        .page-header {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('assets/rooibaardhat.png');
-            background-size: cover;
-            background-position: center;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: var(--white);
-            margin-top: 80px;
-        }
-
-        .page-header h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        .breadcrumb {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-        }
-
-        .breadcrumb li {
-            margin: 0 10px;
-            color: var(--accent);
-        }
-
-        .breadcrumb li a {
-            color: var(--white);
-            text-decoration: none;
-        }
-
-        .breadcrumb li::after {
-            content: '/';
-            margin-left: 10px;
-        }
-
-        .breadcrumb li:last-child::after {
-            display: none;
-        }
-
-        .about-content {
-            padding: 80px 0;
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
-        }
-
-        .about-image {
-            position: relative;
-        }
-
-        .about-image img {
-            width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .director-info {
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 15px 30px;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: white;
+            padding: 15px 20px;
             border-radius: 4px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 40px rgba(192,57,43,0.5);
+            margin-top: 15px;
+            width: 100%;
         }
 
-        .director-info h4 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
+        @media (min-width: 576px) {
+            .director-badge {
+                position: absolute;
+                bottom: 20px;
+                left: -10px;
+                width: auto;
+                margin-top: 0;
+            }
         }
 
-        .director-info p {
-            font-size: 0.9rem;
-            opacity: 0.9;
+        @media (min-width: 768px) {
+            .director-badge {
+                left: -18px;
+                padding: 18px 24px;
+            }
         }
 
-        .vision-mission {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 30px;
+        .director-badge h5 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
         }
 
+        .director-badge p {
+            font-size: 0.75rem;
+            opacity: 0.85;
+            margin: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* VM Boxes */
         .vm-box {
-            background-color: var(--white);
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--accent);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-left: 4px solid var(--red);
+            padding: 20px;
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            transition: all 0.35s ease;
+            height: 100%;
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .vm-box {
+                padding: 28px;
+                margin-bottom: 0;
+            }
+        }
+
+        .vm-box:hover {
+            background: rgba(255,255,255,0.09);
+            border-left-width: 6px;
+            transform: translateX(6px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
         }
 
         .vm-box h4 {
-            color: var(--primary);
-            margin-bottom: 15px;
+            font-family: 'Bebas Neue', sans-serif;
             font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: var(--red-bright);
+            margin-bottom: 8px;
         }
 
         .vm-box p {
+            color: rgba(255,255,255,0.65);
             font-style: italic;
-            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
         }
 
-        .history-timeline {
-            margin-top: 50px;
+        /* ===== STATS STRIP ===== */
+        .stats-strip {
+            background: linear-gradient(135deg, var(--red-dark), var(--red), var(--red-dark));
+            padding: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .stats-strip {
+                padding: 50px 0;
+            }
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .stat-item::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 15%; bottom: 15%;
+            width: 1px;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .stat-item:last-child::after { display: none; }
+
+        .stat-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            line-height: 1;
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        @media (min-width: 768px) {
+            .stat-label {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline-section {
+            background: linear-gradient(135deg, var(--offwhite) 0%, #fff 50%, #fdf0ef 100%);
+            padding: 80px 0 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .timeline-section {
+                padding: 110px 0;
+            }
+        }
+
+        .timeline-section .section-tag { color: var(--red); }
+        .timeline-section .section-title { color: var(--black); }
+        .timeline-section .section-line { background: var(--red); }
+        .timeline-section p { color: #555; }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        @media (min-width: 576px) {
+            .timeline {
+                padding-left: 40px;
+            }
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--red), rgba(192,57,43,0.1));
         }
 
         .timeline-item {
             position: relative;
-            padding-left: 50px;
-            margin-bottom: 30px;
+            padding-left: 30px;
+            padding-bottom: 40px;
         }
 
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 0;
-            width: 2px;
-            height: 100%;
-            background-color: var(--primary);
+        @media (min-width: 576px) {
+            .timeline-item {
+                padding-left: 40px;
+                padding-bottom: 50px;
+            }
         }
 
-        .timeline-year {
+        .timeline-item:last-child { padding-bottom: 0; }
+
+        .timeline-dot {
             position: absolute;
-            left: 0;
-            top: 0;
-            width: 30px;
-            height: 30px;
-            background-color: var(--primary);
-            color: var(--white);
+            left: -36px; top: 4px;
+            width: 16px; height: 16px;
+            background: var(--red);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--red), 0 5px 15px rgba(192,57,43,0.4);
+            transition: transform 0.3s ease;
         }
 
-        .timeline-content {
-            background-color: var(--light-gray);
-            padding: 20px;
-            border-radius: 8px;
+        @media (min-width: 576px) {
+            .timeline-dot {
+                left: -46px;
+                width: 18px;
+                height: 18px;
+            }
         }
 
-        .timeline-content h4 {
-            color: var(--primary);
+        @media (min-width: 768px) {
+            .timeline-dot {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.3);
+        }
+
+        .timeline-year-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: white;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            padding: 4px 12px;
+            border-radius: 2px;
             margin-bottom: 10px;
         }
 
-        .team-section {
-            background-color: var(--light-gray);
-            padding: 80px 0;
+        @media (min-width: 768px) {
+            .timeline-year-badge {
+                font-size: 1rem;
+                padding: 4px 14px;
+                margin-bottom: 12px;
+            }
         }
 
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .team-member {
-            background-color: var(--white);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .team-member:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .team-member img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .member-info {
+        .timeline-card {
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(0,0,0,0.07);
+            border-left: 4px solid var(--red);
             padding: 20px;
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            transition: all 0.4s ease;
+        }
+
+        @media (min-width: 576px) {
+            .timeline-card {
+                padding: 25px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .timeline-card {
+                padding: 28px 30px;
+            }
+        }
+
+        .timeline-card:hover {
+            background: white;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+            transform: translateX(8px);
+        }
+
+        .timeline-card h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: var(--black);
+            margin-bottom: 8px;
+        }
+
+        @media (min-width: 768px) {
+            .timeline-card h4 {
+                font-size: 1.4rem;
+                margin-bottom: 10px;
+            }
+        }
+
+        .timeline-card p {
+            color: #555;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        @media (min-width: 768px) {
+            .timeline-card p {
+                font-size: 0.95rem;
+                line-height: 1.75;
+            }
+        }
+
+        /* ===== TEAM ===== */
+        .team-section {
+            background: linear-gradient(160deg, #0a0a0a 0%, #150505 40%, #0a0a0a 100%);
+            padding: 80px 0 60px;
+        }
+
+        @media (min-width: 768px) {
+            .team-section {
+                padding: 110px 0;
+            }
+        }
+
+        .team-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            height: 100%;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--red), var(--red-dark));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .team-card:hover {
+            border-color: rgba(192,57,43,0.3);
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .team-card:hover::before { transform: scaleX(1); }
+
+        .team-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            filter: grayscale(20%);
+            transition: all 0.5s ease;
+        }
+
+        @media (min-width: 576px) {
+            .team-card img {
+                height: 240px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .team-card img {
+                height: 260px;
+            }
+        }
+
+        .team-card:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.04);
+        }
+
+        .team-card-body {
+            padding: 20px 15px;
             text-align: center;
         }
 
-        .member-info h4 {
-            color: var(--primary);
+        @media (min-width: 768px) {
+            .team-card-body {
+                padding: 28px 24px;
+            }
+        }
+
+        .team-card-body h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: var(--white);
             margin-bottom: 5px;
         }
 
-        .member-info p {
-            color: #666;
-            margin-bottom: 15px;
+        @media (min-width: 768px) {
+            .team-card-body h4 {
+                font-size: 1.5rem;
+            }
         }
 
-        .member-social {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
+        .team-card-body .role {
+            display: inline-block;
+            background: rgba(192,57,43,0.15);
+            border: 1px solid rgba(192,57,43,0.3);
+            color: var(--red-bright);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 2px;
+            margin-bottom: 12px;
         }
 
-        .member-social a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            background-color: var(--primary);
-            color: var(--white);
+        @media (min-width: 768px) {
+            .team-card-body .role {
+                font-size: 0.75rem;
+                margin-bottom: 16px;
+            }
+        }
+
+        .team-social { display: flex; justify-content: center; gap: 8px; }
+
+        .social-btn-sm {
+            width: 32px; height: 32px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
             border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 0.75rem;
             transition: all 0.3s ease;
         }
 
-        .member-social a:hover {
-            background-color: var(--secondary);
+        @media (min-width: 768px) {
+            .social-btn-sm {
+                width: 36px; height: 36px;
+                font-size: 0.8rem;
+            }
         }
 
-        .footer {
-            background-color: var(--secondary);
-            color: var(--white);
-            padding: 60px 0 0;
+        .social-btn-sm:hover {
+            background: var(--red);
+            border-color: var(--red);
+            color: white;
+            transform: translateY(-3px);
         }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
+        /* ===== VALUES ===== */
+        .values-section {
+            background: linear-gradient(135deg, var(--offwhite) 0%, white 60%, #fdf0ef 100%);
+            padding: 80px 0 60px;
         }
 
-        .footer h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--white);
+        @media (min-width: 768px) {
+            .values-section {
+                padding: 110px 0;
+            }
+        }
+
+        .values-section .section-tag { color: var(--red); }
+        .values-section .section-title { color: var(--black); }
+        .values-section .section-line { background: var(--red); }
+
+        .value-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255,255,255,0.65);
+            border: 1px solid rgba(0,0,0,0.07);
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+            height: 100%;
+            transition: all 0.35s ease;
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: 576px) {
+            .value-item {
+                padding: 24px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .value-item {
+                gap: 20px;
+                padding: 28px;
+                margin-bottom: 0;
+            }
+        }
+
+        .value-item:hover {
+            background: white;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            border-color: rgba(192,57,43,0.2);
+        }
+
+        .value-icon {
+            width: 45px; height: 45px;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(192,57,43,0.35);
+            transition: transform 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .value-icon {
+                width: 54px; height: 54px;
+                font-size: 1.3rem;
+            }
+        }
+
+        .value-item:hover .value-icon { transform: rotate(5deg) scale(1.08); }
+
+        .value-text h5 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: var(--black);
+            margin-bottom: 6px;
+        }
+
+        @media (min-width: 768px) {
+            .value-text h5 {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
+            }
+        }
+
+        .value-text p {
+            color: #555;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        @media (min-width: 768px) {
+            .value-text p {
+                font-size: 0.9rem;
+                line-height: 1.7;
+            }
+        }
+
+        /* ===== CTA BAND ===== */
+        .cta-band {
+            background: linear-gradient(135deg, var(--red-dark) 0%, var(--red) 50%, var(--red-dark) 100%);
+            padding: 50px 0;
             position: relative;
-            padding-bottom: 10px;
+            overflow: hidden;
+            text-align: center;
         }
 
-        .footer h3::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 50px;
-            height: 2px;
-            background-color: var(--accent);
+        @media (min-width: 768px) {
+            .cta-band {
+                padding: 80px 0;
+                text-align: left;
+            }
         }
 
-        .footer p, .footer a {
-            color: #bbb;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .footer ul {
-            list-style: none;
-        }
-
-        .footer ul li {
+        .cta-band h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 3.2rem);
+            letter-spacing: 3px;
             margin-bottom: 10px;
         }
 
+        .cta-band p {
+            margin-bottom: 20px;
+        }
+
+        .btn-cta-white, .btn-cta-outline {
+            display: block;
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 3px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 576px) {
+            .btn-cta-white, .btn-cta-outline {
+                display: inline-block;
+                width: auto;
+                margin-bottom: 0;
+            }
+            
+            .btn-cta-white {
+                padding: 14px 38px;
+            }
+            
+            .btn-cta-outline {
+                padding: 12px 38px;
+            }
+        }
+
+        .btn-cta-white {
+            background: white;
+            color: var(--red-dark);
+            border: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-cta-white:hover {
+            background: var(--black);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .btn-cta-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.6);
+        }
+
+        .btn-cta-outline:hover {
+            background: white;
+            color: var(--red-dark);
+            border-color: white;
+            transform: translateY(-3px);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #050505;
+            border-top: 1px solid rgba(192,57,43,0.2);
+            padding: 50px 0 20px;
+        }
+
+        @media (min-width: 768px) {
+            .footer {
+                padding: 70px 0 30px;
+            }
+        }
+
+        .footer h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: var(--white);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--red);
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .footer h4 {
+                font-size: 1.2rem;
+                margin-bottom: 20px;
+            }
+        }
+
+        .footer-links ul { 
+            list-style: none; 
+            padding: 0; 
+        }
+        .footer-links li { 
+            margin-bottom: 8px; 
+        }
+        .footer-links a {
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .footer-links a:hover { 
+            color: white; 
+            padding-left: 5px; 
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            word-break: break-word;
+        }
+        .footer-contact-item i { 
+            color: var(--red-bright); 
+            width: 16px; 
+            margin-top: 3px; 
+            flex-shrink: 0; 
+        }
+
+        .social-links { 
+            display: flex; 
+            gap: 8px; 
+            margin-top: 15px; 
+        }
+        .social-btn {
+            width: 35px; height: 35px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        .social-btn:hover {
+            background: var(--red);
+            border-color: var(--red);
+            color: white;
+            transform: translateY(-3px);
+        }
+
         .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.07);
+            margin-top: 40px;
+            padding-top: 20px;
             text-align: center;
-            padding: 20px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            color: #999;
         }
 
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
+        .footer-bottom p {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.75rem;
+            margin-bottom: 0;
+        }
+        .footer-bottom span { color: var(--red-bright); }
 
-            .about-image {
-                order: -1;
-            }
-
-            .vision-mission {
-                grid-template-columns: 1fr;
+        @media (min-width: 768px) {
+            .footer-bottom p {
+                font-size: 0.85rem;
             }
         }
 
-        @media (max-width: 768px) {
-            .header .container {
-                padding: 15px;
-            }
+        /* ===== UTILITY CLASSES ===== */
+        .container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
 
-            .navbar {
-                position: fixed;
-                top: 80px;
-                left: -100%;
-                width: 80%;
-                height: calc(100vh - 80px);
-                background-color: var(--white);
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;
-                z-index: 999;
-            }
-
-            .navbar.active {
-                left: 0;
-            }
-
-            .navbar ul {
-                flex-direction: column;
-                padding: 30px;
-            }
-
-            .navbar ul li {
-                margin: 15px 0;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .page-header h1 {
-                font-size: 2.5rem;
-            }
-
-            section {
-                padding: 60px 0;
-            }
-
-            .section-title {
-                font-size: 2rem;
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1320px;
             }
         }
 
-        @media (max-width: 576px) {
-            .logo h1 {
-                font-size: 1.5rem;
-            }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
 
-            .page-header h1 {
-                font-size: 2rem;
+        /* ===== ANIMATIONS ===== */
+        .reveal, .reveal-left, .reveal-right {
+            opacity: 1;
+            transform: none;
+        }
+        
+        @media (min-width: 768px) {
+            .reveal { 
+                opacity: 0; 
+                transform: translateY(40px); 
+                transition: all 0.7s ease; 
             }
-
-            .team-grid {
-                grid-template-columns: 1fr;
+            .reveal-left { 
+                opacity: 0; 
+                transform: translateX(-40px); 
+                transition: all 0.7s ease; 
             }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
+            .reveal-right { 
+                opacity: 0; 
+                transform: translateX(40px); 
+                transition: all 0.7s ease; 
+            }
+            .reveal.visible, .reveal-left.visible, .reveal-right.visible { 
+                opacity: 1; 
+                transform: translate(0); 
             }
         }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                 <img src="assets/rooibaardlogo.png" alt="Logo" width="90" height="90" class="d-inline-block align-text-top">
 
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar-custom" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/rooibaardlogo.png" alt="Rooibaard Logo">
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <div class="desktop-nav">
+                <a href="index.html" class="nav-link-custom">Home</a>
+                <a href="about.html" class="nav-link-custom active-link">About</a>
+                <a href="services.html" class="nav-link-custom">Services</a>
+                                                <a href="clients.html" class="nav-link-custom">Clients</a>
+
+                <a href="contact.html" class="nav-link-custom nav-cta">Contact Us</a>
             </div>
-            <nav class="navbar">
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html" class="active">About</a></li>
-                    <li><a href="services.html">Services</a></li>
-                    <!--<li><a href="certifications.html">Certifications</a></li>-->
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="mobile-menu-btn">
+
+            <!-- Mobile Menu Button -->
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
                 <i class="fas fa-bars"></i>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <section class="page-header">
-        <div class="container">
-            <h1>About Us</h1>
-            <ul class="breadcrumb">
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="nav-link-custom">Home</a>
+        <a href="about.html" class="nav-link-custom">About</a>
+        <a href="services.html" class="nav-link-custom">Services</a>
+                                        <a href="clients.html" class="nav-link-custom">Clients</a>
+
+        <a href="contact.html" class="nav-link-custom nav-cta">Contact Us</a>
+    </div>
+
+    <!-- ===== PAGE HERO ===== -->
+    <section class="page-hero">
+        <div class="container page-hero-content">
+            <div class="page-eyebrow">Who We Are</div>
+            <h1>About<br><span style="color: var(--red-bright);">Rooibaard</span></h1>
+            <ul class="breadcrumb-custom">
                 <li><a href="index.html">Home</a></li>
-                <li>About Us</li>
+                <li class="active">About Us</li>
             </ul>
         </div>
+        <!-- Wave -->
+        <svg class="wave-divider" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" preserveAspectRatio="none">
+            <path fill="#0a0a0a" d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z"/>
+        </svg>
     </section>
 
-    <section class="about-content">
+    <!-- ===== OUR STORY ===== -->
+    <section class="story-section">
         <div class="container">
-            <div class="about-grid">
-                <div class="about-text">
-                    <h2 class="section-title">Our Story</h2>
-                    <p>Rooibaard Construction is a 100% black youth owned local Engineering & Mining services contractor operating in Postmasburg, Northern Cape. We provide complete engineering solutions for both private and public sectors.</p>
-                    <p>Founded in 2015 by Mandilakhe Vincent Rooibaard, a young entrepreneur from Postmasburg with extensive experience in the construction and steel industries, our company has grown to become a trusted name in civil engineering and mining services throughout the Northern Cape region.</p>
-                    
-                    <div class="vision-mission">
-                        <div class="vm-box">
-                            <h4>Our Vision</h4>
-                            <p>"To provide affordable and sustainable quality engineering & construction services, striving to be the most successful construction company in the region."</p>
-                        </div>
-                        <div class="vm-box">
-                            <h4>Our Mission</h4>
-                            <p>"To operate a disciplined company in Civil Engineering & Mining services, leading the way to improvement for prompt and efficient services."</p>
-                        </div>
+            <div class="row align-items-center g-4 g-lg-5">
+                <div class="col-lg-6 reveal-left">
+                    <span class="section-tag">Our Story</span>
+                    <h2 class="section-title">Built on Passion,<br>Driven by Purpose</h2>
+                    <div class="section-line mb-3"></div>
+                    <div class="story-text">
+                        <p>Rooibaard Construction is a <strong>100% black youth owned</strong> local Engineering & Mining services contractor operating in Postmasburg, Northern Cape. We provide complete engineering solutions for both private and public sectors.</p>
+                        <p>Founded in 2015 by <strong>Mandilakhe Vincent Rooibaard</strong>, a young entrepreneur from Postmasburg with extensive experience in the construction and steel industries, our company has grown to become a trusted name in civil engineering and mining services throughout the Northern Cape region.</p>
+                        <p>From modest beginnings, we have secured contracts with industry giants like AngloAmerican and Bidvest — a testament to our unwavering commitment to quality, safety, and timely delivery.</p>
                     </div>
-                </div>
-                <div class="about-image">
-                    <img src="assets/mandilakherooiblaad.jpeg" alt="Mandilakhe Vincent Rooibaard">
-                    <div class="director-info">
-                        <h4>Mandilakhe Vincent Rooibaard</h4>
-                        <p>Owner/Director</p>
-                    </div>
-                </div>
-            </div>
 
-            <div class="history-timeline">
-                <h2 class="section-title">Our Journey</h2>
-                <div class="timeline-item">
-                    <div class="timeline-year">2015</div>
-                    <div class="timeline-content">
-                        <h4>Company Founded</h4>
-                        <p>Rooibaard Construction was officially registered as a 100% black youth owned company with a vision to transform the construction industry in Northern Cape.</p>
+                    <div class="row g-2 mt-2">
+                        <div class="col-md-6">
+                            <div class="vm-box">
+                                <h4>Our Vision</h4>
+                                <p>"To provide affordable and sustainable quality engineering & construction services, striving to be the most successful construction company in the region."</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="vm-box">
+                                <h4>Our Mission</h4>
+                                <p>"To operate a disciplined company in Civil Engineering & Mining services, leading the way to improvement for prompt and efficient services."</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2017</div>
-                    <div class="timeline-content">
-                        <h4>First Major Contract</h4>
-                        <p>Secured our first major civil engineering contract, establishing our reputation for quality work in road construction and infrastructure development.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2019</div>
-                    <div class="timeline-content">
-                        <h4>Mining Services Expansion</h4>
-                        <p>Expanded our services to include specialized mining support services, working with major mining companies in the region.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2021</div>
-                    <div class="timeline-content">
-                        <h4>BBBEE Level 1 Achievement</h4>
-                        <p>Achieved BBBEE Level 1 certification, demonstrating our commitment to transformation and empowerment in South Africa's construction sector.</p>
+
+                <div class="col-lg-5 offset-lg-1 text-center reveal-right">
+                    <div class="director-wrap">
+                        <div class="director-frame"></div>
+                        <img src="assets/mandilakherooiblaad.jpeg" alt="Mandilakhe Vincent Rooibaard">
+                        <div class="director-badge">
+                            <h5>Mandilakhe Vincent Rooibaard</h5>
+                            <p>Owner / Director</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- ===== STATS STRIP ===== -->
+    <section class="stats-strip">
+        <div class="container">
+            <div class="row g-3 g-md-4">
+                <div class="col-6 col-md-3 reveal delay-1">
+                    <div class="stat-item">
+                        <div class="stat-number">9+</div>
+                        <div class="stat-label">Years Active</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 reveal delay-2">
+                    <div class="stat-item">
+                        <div class="stat-number">L1</div>
+                        <div class="stat-label">BBBEE Rating</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 reveal delay-3">
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Youth Owned</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 reveal delay-4">
+                    <div class="stat-item">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">Certifications</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== OUR JOURNEY TIMELINE ===== -->
+    <section class="timeline-section">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-6 reveal">
+                    <span class="section-tag">Milestones</span>
+                    <h2 class="section-title">Our Journey</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="col-lg-5 offset-lg-1 reveal delay-2 d-flex align-items-end">
+                    <p class="text-secondary mb-3 pb-1">From a vision in 2015 to a trusted Northern Cape contractor — every milestone marks our commitment to growth and excellence.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="timeline">
+
+                        <div class="timeline-item reveal">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-year-badge">2015</div>
+                            <div class="timeline-card">
+                                <h4>Company Founded</h4>
+                                <p>Rooibaard Construction was officially registered as a 100% black youth owned company with a vision to transform the construction industry in the Northern Cape. CK No: 2015/236912/07.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item reveal delay-1">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-year-badge">2017</div>
+                            <div class="timeline-card">
+                                <h4>First Major Contract</h4>
+                                <p>Secured our first major civil engineering contract, establishing our reputation for quality work in road construction and infrastructure development across the Northern Cape.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item reveal delay-2">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-year-badge">2019</div>
+                            <div class="timeline-card">
+                                <h4>Mining Services Expansion</h4>
+                                <p>Expanded our portfolio to include specialized mining support services — plant fabrication, pipeline installation and technical services — working with major mining companies in the region.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item reveal delay-3">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-year-badge">2021</div>
+                            <div class="timeline-card">
+                                <h4>BBBEE Level 1 Achievement</h4>
+                                <p>Achieved BBBEE Level 1 certification, demonstrating our commitment to transformation and empowerment in South Africa's construction sector — one of the highest ratings possible.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item reveal delay-4">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-year-badge">2024</div>
+                            <div class="timeline-card">
+                                <h4>Continued Growth</h4>
+                                <p>With over 9 years of proven performance, Rooibaard Construction continues to expand its footprint across the Northern Cape, delivering world-class engineering and mining services.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CORE VALUES ===== -->
+    <section class="values-section">
+        <div class="container">
+            <div class="text-center mb-4 reveal">
+                <span class="section-tag">What Drives Us</span>
+                <h2 class="section-title">Our Core Values</h2>
+                <div class="section-line mx-auto"></div>
+            </div>
+
+            <div class="row g-3 g-md-4">
+                <div class="col-md-6 col-lg-3 reveal delay-1">
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="value-text">
+                            <h5>Integrity</h5>
+                            <p>We operate with full transparency and honesty in every project, contract, and relationship.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal delay-2">
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-star"></i></div>
+                        <div class="value-text">
+                            <h5>Excellence</h5>
+                            <p>We set high standards for quality and safety, consistently exceeding client expectations.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal delay-3">
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-users"></i></div>
+                        <div class="value-text">
+                            <h5>Community</h5>
+                            <p>As a local contractor, we invest in local jobs, skills and the upliftment of our region.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal delay-4">
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-leaf"></i></div>
+                        <div class="value-text">
+                            <h5>Sustainability</h5>
+                            <p>We pursue engineering solutions that are environmentally responsible and built to last.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== LEADERSHIP TEAM ===== -->
     <section class="team-section">
         <div class="container">
-            <h2 class="section-title">Our Leadership Team</h2>
-            <div class="team-grid">
-                <div class="team-member">
-                    <img src="assets/mandilakherooiblaad.jpeg" alt="Management Team">
-                    <div class="member-info">
-                        <h4>Mandilakhe Rooibaard</h4>
-                        <p>Founder & Director</p>
-                        <div class="member-social">
-                            <!--<a href="#"><i class="fab fa-linkedin-in"></i></a>-->
-                            <!--<a href="#"><i class="fas fa-envelope"></i></a>-->
+            <div class="text-center mb-4 reveal">
+                <span class="section-tag">The People Behind the Work</span>
+                <h2 class="section-title">Our Leadership Team</h2>
+                <div class="section-line mx-auto"></div>
+            </div>
+
+            <div class="row g-3 g-md-4 justify-content-center">
+                <div class="col-md-6 col-lg-4 reveal delay-1">
+                    <div class="team-card">
+                        <img src="assets/mandilakherooiblaad.jpeg" alt="Mandilakhe Rooibaard">
+                        <div class="team-card-body">
+                            <h4>Mandilakhe Rooibaard</h4>
+                            <span class="role">Founder & Director</span>
+                            <div class="team-social">
+                                <a href="#" class="social-btn-sm"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="mailto:rooibaardconstruction@gmail.com" class="social-btn-sm"><i class="fas fa-envelope"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="team-member">
-                    <img src="assets/engineeringteam.png" alt="Engineering Team">
-                    <div class="member-info">
-                        <h4>Engineering Team</h4>
-                        <p>Professional Engineers</p>
-                        <div class="member-social">
-                            <!--<a href="#"><i class="fab fa-linkedin-in"></i></a>-->
-                            <!--<a href="#"><i class="fas fa-envelope"></i></a>-->
+                <div class="col-md-6 col-lg-4 reveal delay-2">
+                    <div class="team-card">
+                        <img src="assets/engineeringteam.png" alt="Engineering Team">
+                        <div class="team-card-body">
+                            <h4>Engineering Team</h4>
+                            <span class="role">Professional Engineers</span>
+                            <div class="team-social">
+                                <a href="mailto:sales@rooibaardconstruction.com" class="social-btn-sm"><i class="fas fa-envelope"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="team-member">
-                    <img src="assets/rooibaardconstruct.png" alt="Operations Team">
-                    <div class="member-info">
-                        <h4>Operations Team</h4>
-                        <p>Project Managers & Supervisors</p>
-                        <div class="member-social">
-                            <!--<a href="#"><i class="fab fa-linkedin-in"></i></a>-->
-                            <!--<a href="#"><i class="fas fa-envelope"></i></a>-->
+                <div class="col-md-6 col-lg-4 reveal delay-3">
+                    <div class="team-card">
+                        <img src="assets/rooibaardconstruct.png" alt="Operations Team">
+                        <div class="team-card-body">
+                            <h4>Operations Team</h4>
+                            <span class="role">Project Managers & Supervisors</span>
+                            <div class="team-social">
+                                <a href="mailto:sales@rooibaardconstruction.com" class="social-btn-sm"><i class="fas fa-envelope"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -657,26 +1544,48 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ===== CTA BAND ===== -->
+    <section class="cta-band">
+        <div class="container">
+            <div class="row align-items-center gy-4">
+                <div class="col-lg-8 reveal-left">
+                    <h2>Ready to Work With Us?</h2>
+                    <p class="mb-0 opacity-90">Let's build something exceptional together. Reach out for a professional consultation.</p>
+                </div>
+                <div class="col-lg-4 reveal-right">
+                    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-lg-end">
+                        <a href="contact.html" class="btn-cta-white">Get a Quote</a>
+                        <a href="services.html" class="btn-cta-outline">Our Services</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-about">
-                 <img src="assets/rooibaardlogo.png" alt="Logo" width="90" height="90" class="d-inline-block align-text-top">
-
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <img src="assets/rooibaardlogo.png" alt="Rooibaard Logo" width="70" height="70" class="mb-3 img-fluid">
+                    <p class="text-white-50 small">Rooibaard Construction (Pty) Ltd — Building Northern Cape's future with excellence and integrity.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://wa.me/27824227601" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
+                <div class="col-6 col-lg-2 footer-links">
+                    <h4>Navigation</h4>
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="services.html">Services</a></li>
-                        <!--<li><a href="certifications.html">Certifications</a></li>-->
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
-                <div class="footer-services">
-                    <h3>Our Services</h3>
+                <div class="col-6 col-lg-3 footer-links">
+                    <h4>Services</h4>
                     <ul>
                         <li><a href="#">Civil Engineering</a></li>
                         <li><a href="#">Mining Services</a></li>
@@ -684,73 +1593,152 @@
                         <li><a href="#">Infrastructure Work</a></li>
                     </ul>
                 </div>
-                <div class="footer-contact">
-                    <h3>Contact Info</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> 7 Dalia Way, Postmasburg, Northern Cape, South Africa</p>
-                    <p><i class="fas fa-phone"></i> 082 422 7601/068 717 6853</p>
-                    <p><i class="fas fa-envelope"></i> sales@rooibaardconstruction.com</p>
+                <div class="col-lg-4">
+                    <h4>Contact Info</h4>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>7 Dalia Way, Postdene, Postmasburg, 8420</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>082 422 7601 / 068 717 6853</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>rooibaardconstruction@gmail.com</span>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 Rooibaard Construction (Pty) Ltd. All Rights Reserved. | CK No: 2015/236912/07</p>
+                <p>&copy; 2023 <span>Rooibaard Construction (Pty) Ltd</span>. All Rights Reserved. | CK No: 2015/236912/07</p>
             </div>
         </div>
     </footer>
 
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Mobile Menu Toggle
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const navbar = document.querySelector('.navbar');
+            const navbar = document.getElementById('mainNavbar');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('mobileMenuOverlay');
+            const body = document.body;
             
-            mobileMenuBtn.addEventListener('click', function() {
-                navbar.classList.toggle('active');
-                mobileMenuBtn.innerHTML = navbar.classList.contains('active') ? 
-                    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                navbar.classList.toggle('scrolled', window.scrollY > 60);
             });
-            
-            // Close mobile menu when clicking a link
-            const navLinks = document.querySelectorAll('.navbar ul li a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    navbar.classList.remove('active');
-                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                });
-            });
-            
-            // Header scroll effect
-            window.addEventListener('scroll', function() {
-                const header = document.querySelector('.header');
-                header.classList.toggle('scrolled', window.scrollY > 50);
-            });
-            
-            // Animate timeline items on scroll
-            const animateOnScroll = function() {
-                const timelineItems = document.querySelectorAll('.timeline-item');
-                
-                timelineItems.forEach(item => {
-                    const itemPosition = item.getBoundingClientRect().top;
-                    const windowHeight = window.innerHeight;
+
+            // Mobile menu toggle
+            if (menuBtn && mobileMenu && overlay) {
+                menuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     
-                    if (itemPosition < windowHeight - 100) {
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateX(0)';
+                    const isActive = mobileMenu.classList.contains('active');
+                    
+                    if (!isActive) {
+                        // Open menu
+                        mobileMenu.classList.add('active');
+                        overlay.classList.add('active');
+                        menuBtn.classList.add('active');
+                        menuBtn.innerHTML = '<i class="fas fa-times"></i>';
+                        body.style.overflow = 'hidden';
+                    } else {
+                        // Close menu
+                        mobileMenu.classList.remove('active');
+                        overlay.classList.remove('active');
+                        menuBtn.classList.remove('active');
+                        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                        body.style.overflow = '';
                     }
                 });
-            };
+
+                // Close menu when clicking overlay
+                overlay.addEventListener('click', function() {
+                    mobileMenu.classList.remove('active');
+                    overlay.classList.remove('active');
+                    menuBtn.classList.remove('active');
+                    menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    body.style.overflow = '';
+                });
+
+                // Close menu when clicking a link
+                const menuLinks = mobileMenu.querySelectorAll('.nav-link-custom');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.remove('active');
+                        overlay.classList.remove('active');
+                        menuBtn.classList.remove('active');
+                        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                        body.style.overflow = '';
+                    });
+                });
+            }
+
+            // Scroll reveal observer
+            const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
             
-            // Set initial state for animated elements
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateX(-30px)';
-                item.style.transition = 'all 0.5s ease';
+            if (revealEls.length > 0) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px' });
+
+                revealEls.forEach(el => observer.observe(el));
+            }
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    
+                    if (targetId === '#') return;
+                    
+                    const target = document.querySelector(targetId);
+                    
+                    if (target) {
+                        e.preventDefault();
+                        
+                        // Close mobile menu if open
+                        if (mobileMenu && mobileMenu.classList.contains('active')) {
+                            mobileMenu.classList.remove('active');
+                            overlay.classList.remove('active');
+                            menuBtn.classList.remove('active');
+                            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                            body.style.overflow = '';
+                        }
+                        
+                        target.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }
+                });
             });
-            
-            // Run once on page load
-            animateOnScroll();
-            
-            // Run on scroll
-            window.addEventListener('scroll', animateOnScroll);
+
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (window.innerWidth >= 992) {
+                        // Close mobile menu on desktop
+                        if (mobileMenu && mobileMenu.classList.contains('active')) {
+                            mobileMenu.classList.remove('active');
+                            overlay.classList.remove('active');
+                            menuBtn.classList.remove('active');
+                            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                            body.style.overflow = '';
+                        }
+                    }
+                }, 250);
+            });
         });
     </script>
 </body>
